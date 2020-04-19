@@ -1,20 +1,5 @@
-====
 mgsc
 ====
-
-
-.. image:: https://img.shields.io/pypi/v/mgsc.svg
-        :target: https://pypi.python.org/pypi/mgsc
-
-.. image:: https://img.shields.io/travis/amritanshu-pandey/mgsc.svg
-        :target: https://travis-ci.com/amritanshu-pandey/mgsc
-
-.. image:: https://readthedocs.org/projects/mgsc/badge/?version=latest
-        :target: https://mgsc.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
-
 
 Multi git server client. A basic client for multiple git servers like GItlab, Github and Gitea
 
@@ -26,7 +11,16 @@ Multi git server client. A basic client for multiple git servers like GItlab, Gi
 Features
 --------
 
-* TODO
+- Initial version supports listing retrieving all the repositories, namespaces and associated details
+  from multiple git servers
+
+
+Supported servers
+-----------------
+
+- Gitea
+- Gitlab (Self hosted and Gitlab.com)
+- Github.com
 
 Credits
 -------
