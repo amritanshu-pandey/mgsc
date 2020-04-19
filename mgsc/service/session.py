@@ -9,6 +9,12 @@ class UnsupportedGitServer(Exception):
     pass
 
 
+class HttpException(Exception):
+    """An HTTP error occured"""
+
+    pass
+
+
 class Session:
     def __init__(
         self,
@@ -39,7 +45,11 @@ class Session:
             return response
         else:
             raise requests.exceptions.HTTPError(
-                f"Unsuccesful GET operation. response = {response}"
+                {
+                    "msg": f"Unsuccesful GET operation. response = {response}",
+                    "code": response.status_code,
+                    "response": response,
+                }
             )
 
     @property
