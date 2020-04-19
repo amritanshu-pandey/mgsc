@@ -11,7 +11,6 @@ with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-    "Click>=7.0",
     "GitPython",
     "requests"
 ]
@@ -40,7 +39,6 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     description="Multi git server client. A basic client for multiple git servers like GItlab, Github and Gitea",
-    entry_points={"console_scripts": ["mgsc=mgsc.cli:main",],},
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,
