@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: dockerbuild
+name: build-python-package
 
 platform:
   os: linux
@@ -34,7 +34,7 @@ steps:
         from_secret: pypi_username
       pypi_password:
         from_secret: pypi_password
-    depends_on: [linting, tests]
+    depends_on: [linting]
     when:
       event: [tag]
 
