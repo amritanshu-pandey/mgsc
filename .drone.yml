@@ -1,0 +1,40 @@
+---
+kind: pipeline
+name: dockerbuild
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: linting
+    image: python:3.8
+    commands:
+      - pip3 install black
+      - black . --check
+  - name: publish
+    image: python:3.8
+    commands:
+      - git fetch
+      - |
+          if [ ! $(git rev-parse origin/master) = $(git rev-parse ${DRONE_TAG}^{commit}) ]; then
+            echo "Tag is not contained in master branch"
+            exit 1
+          fi
+      - python3 setup.py bdist_wheel
+      - pip3 install twine
+      - |
+          twine upload dist/* \
+            --repository-url "https://upload.pypi.org/legacy/" \
+            --username "$${pypi_username}" \
+            --password "$${pypi_password}" --verbose
+      - echo "Published to pip repo succesfully"
+    environment:
+      pypi_username:
+        from_secret: pypi_username
+      pypi_password:
+        from_secret: pypi_password
+    depends_on: [linting, tests]
+    when:
+      event: [tag]
+
