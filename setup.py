@@ -2,13 +2,17 @@
 
 """The setup script."""
 
+import os
+
 from setuptools import setup, find_packages
 
-with open("README.rst") as readme_file:
+with open("README.md") as readme_file:
     readme = readme_file.read()
 
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
+
+version = os.getenv('DRONE_TAG', 'ci')
 
 requirements = ["GitPython", "requests"]
 
@@ -47,6 +51,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/amritanshu-pandey/mgsc",
-    version="0.1.0",
+    version=version,
     zip_safe=False,
 )
