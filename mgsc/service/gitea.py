@@ -49,7 +49,7 @@ class Gitea(GitService):
         for namespace in namespaces:
             yield Namespace(
                 name=namespace["username"],
-                parent_id="root",
+                parent="root",
                 repositories=self._get_namespace_repos(namespace["username"]),
             )
 

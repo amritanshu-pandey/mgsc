@@ -36,10 +36,14 @@ class Session:
 
     def httpaction(self, http_verb: str, path: str, xstatus: int = 200, **kwargs: str):
         http_verb = getattr(requests, http_verb.lower())
+        auth = None
+        if not self.auth_headers:
+            auth = (self.username, self.secret)
         response = http_verb(
             Session.join_url(self.url, path),
-            headers={**self.auth_headers, **kwargs.get("headers", {})},
+            headers={**(self.auth_headers or {}), **kwargs.get("headers", {})},
             data=kwargs.get("data"),
+            auth=auth
         )
         if response.status_code == xstatus:
             return response
@@ -54,7 +58,7 @@ class Session:
 
     @property
     def supported_servers(self) -> str:
-        return ["gitlab", "github", "gitea"]
+        return ["gitlab", "github", "gitea", "stash"]
 
     @property
     def auth_headers(self):
