@@ -40,7 +40,7 @@ class Github(GitService):
         for namespace in namespaces:
             yield Namespace(
                 name=namespace["login"],
-                parent_id="root",
+                parent="root",
                 repositories=self._get_namespace_repos(namespace["path"]),
             )
 
