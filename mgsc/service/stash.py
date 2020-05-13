@@ -10,26 +10,24 @@ class Stash(GitService):
     @staticmethod
     def _get_clone_address(clone_links_json, addr_type):
         for addr in clone_links_json:
-            if addr['name'] == addr_type:
-                return addr['href']
-        raise RuntimeError(
-            f"Cannot find the clone address of type {addr_type}")
+            if addr["name"] == addr_type:
+                return addr["href"]
+        raise RuntimeError(f"Cannot find the clone address of type {addr_type}")
 
     @property
     def repositories(self) -> Repository:
         all_repos = self.session.httpaction(
             http_verb="get",
             # todo: remove hardcoded limit and use pagination
-            path=f"/rest/api/1.0/projects/~{self.session.username}/repos?limit=1000").json()
+            path=f"/rest/api/1.0/projects/~{self.session.username}/repos?limit=1000",
+        ).json()
 
-        for repo in all_repos['values']:
+        for repo in all_repos["values"]:
             yield Repository(
                 name=repo["name"],
                 namespace=repo["project"]["key"],
-                ssh_url=self._get_clone_address(
-                    repo["links"]["clone"], 'ssh'),
-                http_url=self._get_clone_address(
-                    repo["links"]["clone"], 'http'),
+                ssh_url=self._get_clone_address(repo["links"]["clone"], "ssh"),
+                http_url=self._get_clone_address(repo["links"]["clone"], "http"),
                 description=repo["id"],
             )
 
@@ -42,18 +40,17 @@ class Stash(GitService):
             yield Repository(
                 name=repo["name"],
                 namespace=repo["project"]["key"],
-                ssh_url=self._get_clone_address(
-                    repo["links"]["clone"], 'ssh'),
-                http_url=self._get_clone_address(
-                    repo["links"]["clone"], 'http'),
+                ssh_url=self._get_clone_address(repo["links"]["clone"], "ssh"),
+                http_url=self._get_clone_address(repo["links"]["clone"], "http"),
                 description=repo["id"],
             )
 
     def get_namespaces(self) -> Namespace:
         namespaces = self.session.httpaction(
-            http_verb="get", path="/rest/api/1.0/projects?limit=1000").json()
+            http_verb="get", path="/rest/api/1.0/projects?limit=1000"
+        ).json()
 
-        for namespace in namespaces['values']:
+        for namespace in namespaces["values"]:
             yield Namespace(
                 name=namespace["key"],
                 parent="root",

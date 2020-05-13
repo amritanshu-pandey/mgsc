@@ -43,7 +43,7 @@ class Session:
             Session.join_url(self.url, path),
             headers={**(self.auth_headers or {}), **kwargs.get("headers", {})},
             data=kwargs.get("data"),
-            auth=auth
+            auth=auth,
         )
         if response.status_code == xstatus:
             return response
