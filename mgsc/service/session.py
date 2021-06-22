@@ -50,7 +50,7 @@ class Session:
         else:
             raise requests.exceptions.HTTPError(
                 {
-                    "msg": f"Unsuccesful GET operation. response = {response}",
+                    "msg": f"Unsuccesful GET operation. response = {response.text}",
                     "code": response.status_code,
                     "response": response,
                 }

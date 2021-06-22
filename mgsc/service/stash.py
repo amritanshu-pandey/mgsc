@@ -51,11 +51,13 @@ class Stash(GitService):
         ).json()
 
         for namespace in namespaces["values"]:
-            yield Namespace(
+            namespace_obj = Namespace(
                 name=namespace["key"],
                 parent="root",
-                repositories=self.get_namespace_repos(namespace["key"]),
             )
+
+            namespace_obj.repositories = (self.get_namespace_repos(namespace["key"]),)
+            yield namespace_obj
 
     @property
     def userid(self):

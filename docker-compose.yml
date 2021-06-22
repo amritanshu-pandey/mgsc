@@ -1,0 +1,9 @@
+---
+version: "3"
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:latest
+    ports:
+      - '4043:443'
+      - '4080:80'
+      - '4022:22'
