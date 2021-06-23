@@ -66,7 +66,7 @@ class Gitlab(GitService):
             http_verb="get", path=f"/namespaces/{namespace_id}"
         ).json()
         namespace_obj = Namespace(name=ns["path"], parent=ns["parent_id"], id=ns["id"])
-        namespace_obj.repositories = self.get_namespace_repos(Namespace(ns["path"]))
+        namespace_obj.repositories = self.get_namespace_repos(ns["id"])
         namespace_obj.raw = ns
         return namespace_obj
 
