@@ -6,11 +6,25 @@ class Gitlab(GitService):
     @property
     def servertype(self):
         return "gitlab"
+    
+    def get_paginated(self, path):
+        response = self.session.httpaction(
+            http_verb='get', path=path
+        )
+        number_of_pages = int(response.headers['x-total-pages'])
+        for page in range(1, number_of_pages+1):
+            response = self.session.httpaction(
+                http_verb='get',
+                path=f"{path}?page={page}"
+            ).json()
 
+            for item in response:
+                yield item 
+    
     @property
     def repositories(self) -> Repository:
         all_repos = self.session.httpaction(
-            http_verb="get", path=f"/users/{self.userid}/projects?per_page=2000"
+            http_verb="get", path=f"/users/{self.userid}/projects?per_page=50000"
         ).json()
 
         for repo in all_repos:
@@ -32,9 +46,9 @@ class Gitlab(GitService):
             for repo in self.repositories:
                 yield repo
         else:
-            group_projects = self.session.httpaction(
-                "get", f"/groups/{namespace_id}"
-            ).json()["projects"]
+            group_projects = self.get_paginated(
+                f"/groups/{namespace_id}/projects"
+            )
 
             for repo in group_projects:
                 repo_obj = Repository(
